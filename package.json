@@ -2,7 +2,7 @@
   "name": "clean-architecture-branas-course",
   "version": "1.0.0",
   "description": "Clean architecture course by Rodrigo Branas",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "mocha",
     "test:watch": "mocha --watch",
