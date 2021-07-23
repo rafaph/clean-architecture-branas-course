@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
+    "test:watch": "mocha --watch",
     "prepare": "husky install"
   },
   "author": "Raphael Castro <rafaphcastro@gmail.com>",
