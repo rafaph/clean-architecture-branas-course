@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  node:
+    container_name: clean-architecture-node
+    build: docker/node
+    image: clean-architecture-node
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
