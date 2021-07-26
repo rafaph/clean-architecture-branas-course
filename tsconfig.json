@@ -9,7 +9,12 @@
     "typeRoots": [
       "node_modules/@types",
       "typings"
-    ]
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "@/tests/*": ["../tests/*"],
+      "@/*": ["*"]
+    }
   },
   "include": [
     "./src"

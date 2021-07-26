@@ -5,6 +5,7 @@
   "spec": "tests/**/*.spec.ts",
   "require": [
     "ts-node/register",
+    "tsconfig-paths/register",
     "chai/register-expect"
   ]
 }
