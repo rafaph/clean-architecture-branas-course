@@ -36,8 +36,10 @@ export class CpfValidator {
     let checkerDigit2 = 0;
 
     for (let i = 0; i < 9; i++) {
-      checkerDigit1 += cpfArray[i] * (10 - (i % 10));
-      checkerDigit2 += cpfArray[i] * (11 - (i % 11));
+      const digit = cpfArray[i];
+
+      checkerDigit1 += digit * (10 - (i % 10));
+      checkerDigit2 += digit * (11 - (i % 11));
     }
 
     checkerDigit1 = (checkerDigit1 * 10) % 11;
