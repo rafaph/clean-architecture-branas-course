@@ -1,6 +1,6 @@
 ## Clean Code and Clean Architecture course
 
-[![Build Status](https://travis-ci.org/rafaph/clean-architecture-branas-course.svg?branch=master)](https://travis-ci.org/rafaph/clean-architecture-branas-course)
+[![Build Status](https://travis-ci.com/rafaph/clean-architecture-branas-course.svg?branch=master)](https://travis-ci.com/rafaph/clean-architecture-branas-course)
 
 ### Running
 
