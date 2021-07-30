@@ -92,4 +92,28 @@ describe("PlaceOrder", () => {
 
     expect(order.total.toNumber()).to.be.equals(90);
   });
+
+  it("calculated total with discount must be zero", () => {
+    const service = makePlaceOrder();
+    const order = service.execute({
+      cpf: "810.869.508-28",
+      items: [
+        makeOrderItem({
+          product: makeProduct({
+            price: 20,
+          }),
+          amount: 3,
+        }),
+        makeOrderItem({
+          product: makeProduct({
+            price: 10,
+          }),
+          amount: 4,
+        }),
+      ],
+      discountCoupon: "BR101",
+    });
+
+    expect(order.total.toNumber()).to.be.equals(0);
+  });
 });

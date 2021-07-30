@@ -9,6 +9,7 @@ export class CouponsRepository {
     this.coupons = {
       BR10: 0.1,
       BR20: 0.2,
+      BR101: 1.1,
     };
   }
 
