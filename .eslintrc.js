@@ -1,8 +1,9 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint/eslint-plugin"],
+  plugins: ["@typescript-eslint/eslint-plugin", "sonarjs"],
   extends: [
     "plugin:@typescript-eslint/recommended",
+    "plugin:sonarjs/recommended",
     "plugin:prettier/recommended",
   ],
   root: true,
