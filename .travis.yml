@@ -5,3 +5,5 @@ install:
   - npm ci
 script:
   - npm run test:cov
+notifications:
+  webhooks: https://coveralls.io/webhook
