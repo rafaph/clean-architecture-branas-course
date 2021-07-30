@@ -1,4 +1,5 @@
 import { Product } from "@/entities/product";
+import { Customer } from "@/entities/customer";
 import Decimal from "decimal.js";
 
 export class OrderItem {
@@ -7,8 +8,13 @@ export class OrderItem {
 
 export class Order {
   public constructor(
+    public customer: Customer,
     public items: OrderItem[] = [],
     public discountCoupon: string = "",
     public total: Decimal = new Decimal(0),
   ) {}
+
+  public addItem(item: OrderItem): void {
+    this.items.push(item);
+  }
 }
