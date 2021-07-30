@@ -14,6 +14,7 @@ const makeProduct = (
 ): PlaceOrder.Product => {
   const price = params.price ?? new Decimal(faker.commerce.price()).toNumber();
   const description = params.description ?? faker.commerce.product();
+
   return {
     price,
     description,
@@ -28,6 +29,7 @@ const makeOrderItem = (
 ): PlaceOrder.OrderItem => {
   const product = params.product ?? makeProduct();
   const amount = params.amount ?? faker.datatype.number({ min: 1, max: 10 });
+
   return {
     product,
     amount,
@@ -41,6 +43,8 @@ const ordersRepository = new OrdersRepository();
 
 const makePlaceOrder = () =>
   new PlaceOrder(discountCalculator, cpfValidator, ordersRepository);
+
+const cpf = "810.869.508-28";
 
 describe("PlaceOrder", () => {
   it("throw a error when a cpf is invalid", () => {
@@ -62,7 +66,7 @@ describe("PlaceOrder", () => {
     );
 
     const order = service.execute({
-      cpf: "810.869.508-28",
+      cpf,
       items,
     });
 
@@ -72,7 +76,7 @@ describe("PlaceOrder", () => {
   it("calculated total with discount must be valid", () => {
     const service = makePlaceOrder();
     const order = service.execute({
-      cpf: "810.869.508-28",
+      cpf,
       items: [
         makeOrderItem({
           product: makeProduct({
@@ -96,7 +100,7 @@ describe("PlaceOrder", () => {
   it("calculated total with discount must be zero", () => {
     const service = makePlaceOrder();
     const order = service.execute({
-      cpf: "810.869.508-28",
+      cpf,
       items: [
         makeOrderItem({
           product: makeProduct({
