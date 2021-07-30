@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.com/rafaph/clean-architecture-branas-course.svg?branch=master)](https://travis-ci.com/rafaph/clean-architecture-branas-course)
 [![Coverage Status](https://coveralls.io/repos/github/rafaph/clean-architecture-branas-course/badge.svg?branch=master)](https://coveralls.io/github/rafaph/clean-architecture-branas-course?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c89ca516c5f49327c3af/maintainability)](https://codeclimate.com/github/rafaph/clean-architecture-branas-course/maintainability)
 
 ### Running
 
