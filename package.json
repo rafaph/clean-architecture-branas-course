@@ -7,7 +7,7 @@
     "test": "mocha",
     "test:watch": "npm run-script test -- --watch",
     "test:cov": "nyc mocha",
-    "test:cov:report": "nyc report --reporter=text-lcov | coveralls",
+    "test:cov:report": "nyc report --reporter=lcov",
     "lint": "eslint \"{src,tests}/**/*.ts\"",
     "lint:fix": "npm run-script lint -- --fix",
     "prepare": "husky install"
