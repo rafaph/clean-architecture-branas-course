@@ -6,7 +6,6 @@ import { Customer } from "@/entities/customer";
 import { CpfValidator } from "@/services/cpf-validator";
 import { Product } from "@/entities/product";
 import { ShippingPriceCalculator } from "@/services/shipping-price-calculator";
-import { ShippingInfo } from "@/entities/shipping-info";
 
 export class PlaceOrder {
   public constructor(
