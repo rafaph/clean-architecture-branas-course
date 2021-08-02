@@ -7,24 +7,22 @@ export class ShippingPriceCalculator {
     public readonly cepDistanceCalculator: CepDistanceCalculator,
   ) {}
 
-  private calculateVolume(items: OrderItem[]): number {
-    let total = 0;
+  private calculateInfo(items: OrderItem[]): {
+    volume: number;
+    density: number;
+  } {
+    let volume = 0;
+    let density = 0;
 
     for (const item of items) {
-      total += item.product.volume * item.amount;
+      volume += item.product.volume * item.amount;
+      density += item.product.density * item.amount;
     }
 
-    return total;
-  }
-
-  private calculateDensity(items: OrderItem[]): number {
-    let total = 0;
-
-    for (const item of items) {
-      total += item.product.density * item.amount;
-    }
-
-    return total;
+    return {
+      volume,
+      density,
+    };
   }
 
   public calculate(
@@ -36,8 +34,7 @@ export class ShippingPriceCalculator {
       cepOrigin,
       cepDestination,
     );
-    const volume = this.calculateVolume(items);
-    const density = this.calculateDensity(items);
+    const { volume, density } = this.calculateInfo(items);
     let price = distance.toNumber() * volume * (density / 100);
 
     if (price < 10) {
