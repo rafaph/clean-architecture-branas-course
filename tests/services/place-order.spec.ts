@@ -120,4 +120,26 @@ describe("PlaceOrder", () => {
 
     expect(order.total.toNumber()).to.be.equals(0);
   });
+
+  it("throw a error if coupon is not found", () => {
+    const service = makePlaceOrder();
+    expect(() =>
+      service.execute({
+        cpf,
+        items: [makeOrderItem()],
+        discountCoupon: "BR31",
+      }),
+    ).to.throw();
+  });
+
+  it("throw a error if coupon is expired", () => {
+    const service = makePlaceOrder();
+    expect(() =>
+      service.execute({
+        cpf,
+        items: [makeOrderItem()],
+        discountCoupon: "BR20",
+      }),
+    ).to.throw();
+  });
 });
