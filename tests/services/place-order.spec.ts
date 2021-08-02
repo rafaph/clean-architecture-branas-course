@@ -1,120 +1,97 @@
-import faker from "faker";
 import { PlaceOrder } from "@/services/place-order";
-import Decimal from "decimal.js";
 import { DiscountCalculator } from "@/services/discount-calculator";
 import { CouponsRepository } from "@/repositories/coupons-repository";
 import { OrdersRepository } from "@/repositories/orders-repository";
-import { CpfValidator } from "../../src/services/cpf-validator";
+import { CpfValidator } from "@/services/cpf-validator";
+import { ShippingPriceCalculator } from "@/services/shipping-price-calculator";
+import { CepDistanceCalculator } from "@/services/cep-distance-calculator";
+import { OrderItemFactory } from "../factories/order-item";
+import sinon from "sinon";
+import Decimal from "decimal.js";
 
-const makeProduct = (
-  params: {
-    description?: string;
-    price?: number;
-  } = {},
-): PlaceOrder.Product => {
-  const price = params.price ?? new Decimal(faker.commerce.price()).toNumber();
-  const description = params.description ?? faker.commerce.product();
+const makePlaceOrder = (shippingPrice = 0) => {
+  const couponsRepository = new CouponsRepository();
+  const discountCalculator = new DiscountCalculator(couponsRepository);
+  const cpfValidator = new CpfValidator();
+  const ordersRepository = new OrdersRepository();
+  const cepDistanceCalculator = new CepDistanceCalculator();
+  const shippingPriceCalculator = new ShippingPriceCalculator(
+    cepDistanceCalculator,
+  );
+  sinon
+    .stub(shippingPriceCalculator, "calculate")
+    .callsFake(() => new Decimal(shippingPrice));
+  const placeOrder = new PlaceOrder(
+    discountCalculator,
+    shippingPriceCalculator,
+    cpfValidator,
+    ordersRepository,
+  );
 
   return {
-    price,
-    description,
+    placeOrder,
+    shippingPriceCalculator,
   };
 };
-
-const makeOrderItem = (
-  params: {
-    product?: PlaceOrder.Product;
-    amount?: number;
-  } = {},
-): PlaceOrder.OrderItem => {
-  const product = params.product ?? makeProduct();
-  const amount = params.amount ?? faker.datatype.number({ min: 1, max: 10 });
-
-  return {
-    product,
-    amount,
-  };
-};
-
-const couponsRepository = new CouponsRepository();
-const discountCalculator = new DiscountCalculator(couponsRepository);
-const cpfValidator = new CpfValidator();
-const ordersRepository = new OrdersRepository();
-
-const makePlaceOrder = () =>
-  new PlaceOrder(discountCalculator, cpfValidator, ordersRepository);
 
 const cpf = "810.869.508-28";
+const cep = "22222-222";
 
 describe("PlaceOrder", () => {
   it("throw a error when a cpf is invalid", () => {
-    const service = makePlaceOrder();
+    const { placeOrder } = makePlaceOrder();
     expect(() =>
-      service.execute({
+      placeOrder.execute({
         cpf: "810.869.508-25",
         items: [],
+        cep,
       }),
     ).to.throw();
   });
 
   it("calculated total must be valid", () => {
-    const service = makePlaceOrder();
-    const items = new Array(10).fill(null).map(() => makeOrderItem());
+    const { placeOrder } = makePlaceOrder();
+    const items = new OrderItemFactory().buildMany(5);
     const total = items.reduce(
-      (current, item) => current + item.product.price * item.amount,
+      (current, item) => current + item.product.price.toNumber() * item.amount,
       0,
     );
 
-    const order = service.execute({
+    const order = placeOrder.execute({
       cpf,
       items,
+      cep,
     });
 
-    expect(order.total.toNumber()).to.be.equals(total);
+    expect(order.total.toFixed(2)).to.be.equals(new Decimal(total).toFixed(2));
   });
 
   it("calculated total with discount must be valid", () => {
-    const service = makePlaceOrder();
-    const order = service.execute({
+    const { placeOrder } = makePlaceOrder();
+    const items = new OrderItemFactory().buildMany(5);
+    const total = items.reduce(
+      (current, item) => current + item.product.price.toNumber() * item.amount,
+      0,
+    );
+    const order = placeOrder.execute({
       cpf,
-      items: [
-        makeOrderItem({
-          product: makeProduct({
-            price: 20,
-          }),
-          amount: 3,
-        }),
-        makeOrderItem({
-          product: makeProduct({
-            price: 10,
-          }),
-          amount: 4,
-        }),
-      ],
+      items,
+      cep,
       discountCoupon: "BR10",
     });
 
-    expect(order.total.toNumber()).to.be.equals(90);
+    expect(order.total.toFixed(2)).to.be.equals(
+      new Decimal(total * 0.9).toFixed(2),
+    );
   });
 
-  it("calculated total with discount must be zero", () => {
-    const service = makePlaceOrder();
-    const order = service.execute({
+  it("calculated total with max discount must be zero", () => {
+    const { placeOrder } = makePlaceOrder();
+    const items = new OrderItemFactory().buildMany(5);
+    const order = placeOrder.execute({
       cpf,
-      items: [
-        makeOrderItem({
-          product: makeProduct({
-            price: 20,
-          }),
-          amount: 3,
-        }),
-        makeOrderItem({
-          product: makeProduct({
-            price: 10,
-          }),
-          amount: 4,
-        }),
-      ],
+      items,
+      cep,
       discountCoupon: "BR101",
     });
 
@@ -122,24 +99,45 @@ describe("PlaceOrder", () => {
   });
 
   it("throw a error if coupon is not found", () => {
-    const service = makePlaceOrder();
+    const { placeOrder } = makePlaceOrder();
     expect(() =>
-      service.execute({
+      placeOrder.execute({
         cpf,
-        items: [makeOrderItem()],
+        items: [new OrderItemFactory().build()],
+        cep,
         discountCoupon: "BR31",
       }),
     ).to.throw();
   });
 
   it("throw a error if coupon is expired", () => {
-    const service = makePlaceOrder();
+    const { placeOrder } = makePlaceOrder();
     expect(() =>
-      service.execute({
+      placeOrder.execute({
         cpf,
-        items: [makeOrderItem()],
+        items: [new OrderItemFactory().build()],
         discountCoupon: "BR20",
+        cep,
       }),
     ).to.throw();
+  });
+
+  it("calculated total with discount must not apply to shipping price", () => {
+    const { placeOrder } = makePlaceOrder(20);
+    const items = new OrderItemFactory().buildMany(5);
+    const total = items.reduce(
+      (current, item) => current + item.product.price.toNumber() * item.amount,
+      0,
+    );
+    const order = placeOrder.execute({
+      cpf,
+      items,
+      cep,
+      discountCoupon: "BR10",
+    });
+
+    expect(order.total.toFixed(2)).to.be.equals(
+      new Decimal(total * 0.9 + 20).toFixed(2),
+    );
   });
 });
