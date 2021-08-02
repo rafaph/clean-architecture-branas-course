@@ -10,8 +10,8 @@ export class Order {
   public constructor(
     public customer: Customer,
     public items: OrderItem[] = [],
-    public discountCoupon: string = "",
     public total: Decimal = new Decimal(0),
+    public discountCoupon?: string,
   ) {}
 
   public addItem(item: OrderItem): void {

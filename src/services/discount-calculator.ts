@@ -4,8 +4,8 @@ import { CouponsRepository } from "@/repositories/coupons-repository";
 export class DiscountCalculator {
   public constructor(private couponRepository: CouponsRepository) {}
 
-  private getPercentage(discountCoupon: string): number {
-    if (discountCoupon === "") {
+  private getPercentage(discountCoupon?: string): number {
+    if (!discountCoupon) {
       return 0;
     }
 
@@ -22,7 +22,7 @@ export class DiscountCalculator {
     return coupon.value;
   }
 
-  public calculate(discountCoupon: string, total: Decimal): Decimal {
+  public calculate(total: Decimal, discountCoupon?: string): Decimal {
     const percentage = this.getPercentage(discountCoupon);
     return total.times(percentage);
   }

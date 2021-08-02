@@ -21,7 +21,7 @@ export class PlaceOrder {
     }
 
     total = total.minus(
-      this.discountCalculator.calculate(order.discountCoupon, total),
+      this.discountCalculator.calculate(total, order.discountCoupon),
     );
 
     if (total.comparedTo(0) === -1) {
