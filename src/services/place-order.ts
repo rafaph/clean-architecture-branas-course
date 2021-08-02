@@ -5,15 +5,18 @@ import { OrdersRepository } from "@/repositories/orders-repository";
 import { Customer } from "@/entities/customer";
 import { CpfValidator } from "@/services/cpf-validator";
 import { Product } from "@/entities/product";
+import { ShippingPriceCalculator } from "@/services/shipping-price-calculator";
+import { ShippingInfo } from "@/entities/shipping-info";
 
 export class PlaceOrder {
   public constructor(
     private discountCalculator: DiscountCalculator,
+    private shippingPriceCalculator: ShippingPriceCalculator,
     private cpfValidator: CpfValidator,
     private repository: OrdersRepository,
   ) {}
 
-  public calculateTotal(order: Order): Decimal {
+  private calculateTotal(order: Order): Decimal {
     let total = new Decimal(0);
 
     for (const item of order.items) {
@@ -28,15 +31,23 @@ export class PlaceOrder {
       total = new Decimal(0);
     }
 
+    total = total.plus(order.shippingInfo?.value ?? 0);
+
     return total;
+  }
+
+  private calculateShippingInfo(items: OrderItem[], cep: string): ShippingInfo {
+    const shippingInfo = new ShippingInfo(cep);
+    shippingInfo.value = this.shippingPriceCalculator.calculate(
+      items,
+      shippingInfo.cepOrigin,
+      shippingInfo.cepDestination,
+    );
+    return shippingInfo;
   }
 
   private getCustomer(cpf: string): Customer {
     return new Customer(cpf);
-  }
-
-  private getProduct(product: { description: string; price: number }) {
-    return new Product(product.description, new Decimal(product.price));
   }
 
   private getOrderItem(orderItem: { product: Product; amount: number }) {
@@ -49,18 +60,23 @@ export class PlaceOrder {
     }
   }
 
+  private getOrder(input: PlaceOrder.Input): Order {
+    const customer = this.getCustomer(input.cpf);
+
+    return new Order(customer);
+  }
+
   public execute(input: PlaceOrder.Input): Order {
     this.validate(input);
 
-    const customer = this.getCustomer(input.cpf);
-    const order = new Order(customer);
+    const order = this.getOrder(input);
 
     if (input.discountCoupon) {
       order.discountCoupon = input.discountCoupon;
     }
 
     for (const item of input.items) {
-      const product = this.getProduct(item.product);
+      const product = item.product;
       const orderItem = this.getOrderItem({
         product,
         amount: item.amount,
@@ -68,7 +84,9 @@ export class PlaceOrder {
       order.addItem(orderItem);
     }
 
+    order.shippingInfo = this.calculateShippingInfo(order.items, input.cep);
     order.total = this.calculateTotal(order);
+
     this.repository.addOrder(order);
 
     return order;
@@ -76,11 +94,6 @@ export class PlaceOrder {
 }
 
 export namespace PlaceOrder {
-  export type Product = {
-    description: string;
-    price: number;
-  };
-
   export type OrderItem = {
     product: Product;
     amount: number;
@@ -89,6 +102,7 @@ export namespace PlaceOrder {
   export type Input = {
     cpf: string;
     items: OrderItem[];
+    cep: string;
     discountCoupon?: string;
   };
 }
