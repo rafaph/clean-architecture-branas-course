@@ -1,9 +1,8 @@
 import { CepDistanceCalculator } from "@/services/cep-distance-calculator";
 import { OrderItem } from "@/entities/order";
 import { ShippingPriceCalculator } from "@/services/shipping-price-calculator";
-import { OrderItemFactory } from "../factories/order-item";
-import { ProductFactory } from "../factories/product";
-import { expect } from "chai";
+import { OrderItemFactory } from "@tests/factories/order-item";
+import { ProductFactory } from "@tests/factories/product";
 
 const cepDistanceCalculator = new CepDistanceCalculator();
 

@@ -1,5 +1,4 @@
 import { subDays } from "date-fns";
-
 import { Coupon } from "@/entities/coupon";
 
 export class CouponsRepository {

@@ -1,5 +1,5 @@
-import { OrderItem } from "@/entities/order";
 import Decimal from "decimal.js";
+import { OrderItem } from "@/entities/order";
 import { CepDistanceCalculator } from "@/services/cep-distance-calculator";
 
 export class ShippingPriceCalculator {

@@ -57,7 +57,7 @@ export class PlaceOrder {
     }
   }
 
-  private getOrder(input: PlaceOrder.Input): Order {
+  private createOrder(input: PlaceOrder.Input): Order {
     const customer = this.getCustomer(input.cpf);
     const order = new Order(customer);
 
@@ -69,7 +69,7 @@ export class PlaceOrder {
   public execute(input: PlaceOrder.Input): Order {
     this.validate(input);
 
-    const order = this.getOrder(input);
+    const order = this.createOrder(input);
 
     if (input.discountCoupon) {
       order.discountCoupon = input.discountCoupon;

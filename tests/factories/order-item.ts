@@ -1,7 +1,7 @@
 import { OrderItem } from "@/entities/order";
 import faker from "faker";
 import { Product } from "@/entities/product";
-import { ProductFactory } from "./product";
+import { ProductFactory } from "@tests/factories/product";
 
 export class OrderItemFactory {
   public build(params: OrderItemFactory.Params = {}): OrderItem {

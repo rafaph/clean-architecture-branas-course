@@ -5,7 +5,7 @@ import { OrdersRepository } from "@/repositories/orders-repository";
 import { CpfValidator } from "@/services/cpf-validator";
 import { ShippingPriceCalculator } from "@/services/shipping-price-calculator";
 import { CepDistanceCalculator } from "@/services/cep-distance-calculator";
-import { OrderItemFactory } from "../factories/order-item";
+import { OrderItemFactory } from "@tests/factories/order-item";
 import sinon from "sinon";
 import Decimal from "decimal.js";
 

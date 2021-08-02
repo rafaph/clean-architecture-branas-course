@@ -1,5 +1,4 @@
-import { expect } from "chai";
-import { ProductFactory } from "../factories/product";
+import { ProductFactory } from "@tests/factories/product";
 
 describe("Product", () => {
   it("must have volume calculated", () => {
