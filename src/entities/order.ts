@@ -12,7 +12,7 @@ export class Order {
     public customer: Customer,
     public items: OrderItem[] = [],
     public total: Decimal = new Decimal(0),
-    public shippingInfo?: ShippingInfo,
+    public shippingInfo: ShippingInfo = new ShippingInfo(),
     public discountCoupon?: string,
   ) {}
 

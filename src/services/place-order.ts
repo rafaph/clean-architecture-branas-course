@@ -31,19 +31,17 @@ export class PlaceOrder {
       total = new Decimal(0);
     }
 
-    total = total.plus(order.shippingInfo?.value ?? 0);
+    total = total.plus(order.shippingInfo.value);
 
     return total;
   }
 
-  private calculateShippingInfo(items: OrderItem[], cep: string): ShippingInfo {
-    const shippingInfo = new ShippingInfo(cep);
-    shippingInfo.value = this.shippingPriceCalculator.calculate(
-      items,
-      shippingInfo.cepOrigin,
-      shippingInfo.cepDestination,
+  private calculateShippingPrice(order: Order): Decimal {
+    return this.shippingPriceCalculator.calculate(
+      order.items,
+      order.shippingInfo.cepOrigin,
+      order.shippingInfo.cepDestination,
     );
-    return shippingInfo;
   }
 
   private getCustomer(cpf: string): Customer {
@@ -62,8 +60,11 @@ export class PlaceOrder {
 
   private getOrder(input: PlaceOrder.Input): Order {
     const customer = this.getCustomer(input.cpf);
+    const order = new Order(customer);
 
-    return new Order(customer);
+    order.shippingInfo.cepDestination = input.cep;
+
+    return order;
   }
 
   public execute(input: PlaceOrder.Input): Order {
@@ -84,7 +85,7 @@ export class PlaceOrder {
       order.addItem(orderItem);
     }
 
-    order.shippingInfo = this.calculateShippingInfo(order.items, input.cep);
+    order.shippingInfo.value = this.calculateShippingPrice(order);
     order.total = this.calculateTotal(order);
 
     this.repository.addOrder(order);

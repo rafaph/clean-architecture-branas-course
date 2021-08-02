@@ -1,9 +1,13 @@
 import Decimal from "decimal.js";
 
 export class ShippingInfo {
-  public constructor(
-    public cepDestination: string,
-    public value: Decimal = new Decimal(0),
-    public cepOrigin: string = "11111-111",
-  ) {}
+  public cepDestination: string;
+  public cepOrigin: string;
+  public value: Decimal;
+
+  public constructor() {
+    this.cepDestination = "";
+    this.value = new Decimal(0);
+    this.cepOrigin = "11111-111";
+  }
 }
