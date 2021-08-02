@@ -4,9 +4,26 @@ import { CouponsRepository } from "@/repositories/coupons-repository";
 export class DiscountCalculator {
   public constructor(private couponRepository: CouponsRepository) {}
 
+  private getPercentage(discountCoupon: string): number {
+    if (discountCoupon === "") {
+      return 0;
+    }
+
+    const coupon = this.couponRepository.getCoupon(discountCoupon);
+
+    if (!coupon) {
+      throw new Error("Invalid coupon");
+    }
+
+    if (!coupon.isValid()) {
+      throw new Error("Expired coupon");
+    }
+
+    return coupon.value;
+  }
+
   public calculate(discountCoupon: string, total: Decimal): Decimal {
-    const percentage =
-      this.couponRepository.getDiscountPercentage(discountCoupon);
+    const percentage = this.getPercentage(discountCoupon);
     return total.times(percentage);
   }
 }

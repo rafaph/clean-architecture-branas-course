@@ -1,23 +1,19 @@
-interface Coupons {
-  [key: string]: number;
-}
+import { subDays } from "date-fns";
+
+import { Coupon } from "@/entities/coupon";
 
 export class CouponsRepository {
-  private readonly coupons: Coupons;
+  private readonly coupons: Coupon[];
 
   public constructor() {
-    this.coupons = {
-      BR10: 0.1,
-      BR20: 0.2,
-      BR101: 1.1,
-    };
+    this.coupons = [
+      new Coupon("BR10", 0.1),
+      new Coupon("BR20", 0.2, subDays(new Date(), 1)),
+      new Coupon("BR101", 1.1),
+    ];
   }
 
-  public getDiscountPercentage(discountCoupon: string): number {
-    if (this.coupons[discountCoupon] === undefined) {
-      return 0;
-    }
-
-    return this.coupons[discountCoupon];
+  public getCoupon(discountCoupon: string): Coupon | undefined {
+    return this.coupons.find((coupon) => coupon.code === discountCoupon);
   }
 }
