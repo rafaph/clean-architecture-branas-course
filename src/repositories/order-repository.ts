@@ -1,6 +1,6 @@
 import { Order } from "@/entities/order";
 
-export class OrdersRepository {
+export class OrderRepository {
   private readonly orders: Order[];
 
   public constructor() {
