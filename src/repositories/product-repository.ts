@@ -1,4 +1,3 @@
-import { findInList } from "@/helpers/findInList";
 import { Product } from "@/entities/product";
 
 export class ProductRepository {
@@ -37,9 +36,6 @@ export class ProductRepository {
   }
 
   public getProduct(id: string): Product | undefined {
-    return findInList<Product>(
-      this.products,
-      (product: Product) => product.id === id,
-    );
+    return this.products.find((product: Product) => product.id === id);
   }
 }

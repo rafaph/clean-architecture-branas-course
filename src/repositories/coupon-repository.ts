@@ -1,4 +1,3 @@
-import { findInList } from "@/helpers/findInList";
 import { subDays, addDays } from "date-fns";
 import { Coupon } from "@/entities/coupon";
 
@@ -25,9 +24,6 @@ export class CouponRepository {
   }
 
   public getCoupon(code: string): Coupon | undefined {
-    return findInList<Coupon>(
-      this.coupons,
-      (coupom: Coupon) => coupom.code === code,
-    );
+    return this.coupons.find((coupon: Coupon) => coupon.code === code);
   }
 }
