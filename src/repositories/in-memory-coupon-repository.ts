@@ -1,7 +1,8 @@
 import { subDays, addDays } from "date-fns";
 import { Coupon } from "@/entities/coupon";
+import { CouponRepository } from "@/interfaces/repositories/coupon-repository";
 
-export class CouponRepository {
+export class InMemoryCouponRepository implements CouponRepository {
   private readonly coupons: Coupon[];
 
   public constructor() {

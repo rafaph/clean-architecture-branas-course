@@ -1,6 +1,7 @@
 import { Product } from "@/entities/product";
+import { ProductRepository } from "@/interfaces/repositories/product-repository";
 
-export class ProductRepository {
+export class InMemoryProductRepository implements ProductRepository {
   private readonly products: Product[];
 
   public constructor() {

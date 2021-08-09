@@ -1,11 +1,11 @@
 import { Order } from "@/entities/order";
-import { OrderRepository } from "@/repositories/order-repository";
 import { Customer } from "@/entities/customer";
 import { CpfValidator } from "@/services/cpf-validator";
 import { FreightCalculatorAPI } from "@/interfaces/freight-calculator-api";
 import { ZipCodeDistanceCalculatorAPI } from "@/interfaces/zip-code-distance-calculator-api";
-import { ProductRepository } from "@/repositories/product-repository";
-import { CouponRepository } from "@/repositories/coupon-repository";
+import { OrderRepository } from "@/interfaces/repositories/order-repository";
+import { ProductRepository } from "@/interfaces/repositories/product-repository";
+import { CouponRepository } from "@/interfaces/repositories/coupon-repository";
 
 export class PlaceOrder {
   private readonly cpfValidator: CpfValidator;

@@ -1,6 +1,7 @@
 import { Order } from "@/entities/order";
+import { OrderRepository } from "@/interfaces/repositories/order-repository";
 
-export class OrderRepository {
+export class InMemoryOrderRepository implements OrderRepository {
   private readonly orders: Order[];
 
   public constructor() {

@@ -1,20 +1,20 @@
 import { PlaceOrder } from "@/use-cases/place-order";
 import { CpfValidator } from "@/services/cpf-validator";
-import { OrderRepository } from "@/repositories/order-repository";
+import { InMemoryOrderRepository } from "@/repositories/in-memory-order-repository";
 import { ZipCodeDistanceCalculatorAPIMemory } from "@/services/zip-code-distance-calculator-api-memory";
 import { FreightCalculator } from "@/services/freight-calculator";
-import { ProductRepository } from "@/repositories/product-repository";
-import { CouponRepository } from "@/repositories/coupon-repository";
+import { InMemoryProductRepository } from "@/repositories/in-memory-product-repository";
+import { InMemoryCouponRepository } from "@/repositories/in-memory-coupon-repository";
 
 const makePlaceOrder = (
   params: Partial<PlaceOrder.ConstructorParams> = {},
 ): PlaceOrder => {
   const cpfValidator = new CpfValidator();
-  const orderRepository = new OrderRepository();
+  const orderRepository = new InMemoryOrderRepository();
   const zipCodeDistanceCalculator = new ZipCodeDistanceCalculatorAPIMemory();
   const freightCalculator = new FreightCalculator();
-  const productRepository = new ProductRepository();
-  const couponRepository = new CouponRepository();
+  const productRepository = new InMemoryProductRepository();
+  const couponRepository = new InMemoryCouponRepository();
 
   return new PlaceOrder({
     cpfValidator,
