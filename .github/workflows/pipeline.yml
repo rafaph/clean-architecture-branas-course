@@ -54,6 +54,10 @@ jobs:
           npx patch-package
       - name: Test
         run: npm run test:cov
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Cleanup
         if: ${{ always() }}
         run: |

@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:lts-alpine
 
 RUN apk add -U bash entr ruby python make gcc g++ git
 
