@@ -115,4 +115,16 @@ describe("PlaceOrder", () => {
       }),
     ).to.throw();
   });
+
+  it("should generate a order code", () => {
+    const placeOrder = makePlaceOrder();
+    const { code } = placeOrder.execute({
+      cpf,
+      items: [{ productId: "1", quantity: 2 }],
+      zipCode,
+    });
+    const year = new Date().getFullYear();
+
+    expect(code).to.be.equals(`${year}00000001`);
+  });
 });
