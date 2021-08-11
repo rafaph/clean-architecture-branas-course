@@ -2,6 +2,7 @@
   "compilerOptions": {
     "incremental": true,
     "target": "es6",
+    "lib": ["ESNext"],
     "module": "commonjs",
     "outDir": "./dist",
     "strict": true,

@@ -73,6 +73,7 @@ export class PlaceOrder {
     return {
       total: order.total,
       freight: order.freight,
+      code: order.code,
     };
   }
 }
@@ -91,6 +92,7 @@ export namespace PlaceOrder {
   export type Output = {
     total: number;
     freight: number;
+    code: string;
   };
 
   export type ConstructorParams = {

@@ -1,18 +1,21 @@
 import { OrderItem } from "@/entities/order-item";
 import { Customer } from "@/entities/customer";
 import { Coupon } from "@/entities/coupon";
-import { Product } from "@/entities/product";
 
 export class Order {
+  public id: number;
   public customer: Customer;
   public items: OrderItem[];
   public freight: number;
   public coupon?: Coupon;
+  public date: Date;
 
   public constructor({ customer }: Order.ConstructorParams) {
+    this.id = -1;
     this.customer = customer;
     this.items = [];
     this.freight = 0;
+    this.date = new Date();
   }
 
   public addCoupon(coupon: Coupon): void {
@@ -45,6 +48,13 @@ export class Order {
     total += this.freight;
 
     return total;
+  }
+
+  public get code(): string {
+    const year = this.date.getFullYear();
+    const seq = `${this.id}`.padStart(8, "0");
+
+    return `${year}${seq}`;
   }
 }
 

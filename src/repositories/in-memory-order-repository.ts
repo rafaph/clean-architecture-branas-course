@@ -9,6 +9,7 @@ export class InMemoryOrderRepository implements OrderRepository {
   }
 
   public addOrder(order: Order): void {
+    order.id = this.orders.length + 1;
     this.orders.push(order);
   }
 }
