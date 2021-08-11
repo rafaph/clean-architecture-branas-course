@@ -8,7 +8,8 @@ describe("OrderItem", () => {
     });
     const quantity = 10;
     const orderItem = new OrderItem({
-      product,
+      productId: product.id,
+      price: product.price,
       quantity,
     });
     expect(orderItem.total).to.be.equal(100);

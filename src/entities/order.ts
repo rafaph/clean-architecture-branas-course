@@ -21,10 +21,11 @@ export class Order {
     }
   }
 
-  public addItem({ product, quantity }: Order.Item): void {
+  public addItem({ productId, price, quantity }: Order.Item): void {
     this.items.push(
       new OrderItem({
-        product,
+        productId,
+        price,
         quantity,
       }),
     );
@@ -54,7 +55,8 @@ export namespace Order {
   };
 
   export type Item = {
-    product: Product;
+    productId: string;
+    price: number;
     quantity: number;
   };
 }

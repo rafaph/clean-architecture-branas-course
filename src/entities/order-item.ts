@@ -1,22 +1,27 @@
-import { Product } from "@/entities/product";
-
 export class OrderItem {
-  public product: Product;
+  public productId: string;
+  public price: number;
   public quantity: number;
 
-  public constructor({ product, quantity }: OrderItem.ConstructorParams) {
-    this.product = product;
+  public constructor({
+    productId,
+    price,
+    quantity,
+  }: OrderItem.ConstructorParams) {
+    this.productId = productId;
+    this.price = price;
     this.quantity = quantity;
   }
 
   public get total(): number {
-    return this.product.price * this.quantity;
+    return this.price * this.quantity;
   }
 }
 
 export namespace OrderItem {
   export type ConstructorParams = {
-    product: Product;
+    productId: string;
+    price: number;
     quantity: number;
   };
 }
