@@ -41,14 +41,17 @@ export class PlaceOrder {
     this.validate(input);
 
     const customer = new Customer({ cpf: input.cpf });
-    const order = new Order({ customer });
+    const order = new Order({
+      customer,
+      zipCode: input.zipCode,
+    });
     const distance = this.zipCodeDistanceCalculator.calculate(
       input.zipCode,
       "99.999-99",
     );
 
     for (const { productId, quantity } of input.items) {
-      const product = this.productRepository.getProduct(productId);
+      const product = this.productRepository.get(productId);
       if (!product) {
         throw new Error("Product not found");
       }
@@ -62,13 +65,13 @@ export class PlaceOrder {
     }
 
     if (input.coupon) {
-      const coupon = this.couponRepository.getCoupon(input.coupon);
+      const coupon = this.couponRepository.get(input.coupon);
       if (coupon) {
         order.addCoupon(coupon);
       }
     }
 
-    this.orderRepository.addOrder(order);
+    this.orderRepository.add(order);
 
     return {
       total: order.total,
