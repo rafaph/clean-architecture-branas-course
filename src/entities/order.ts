@@ -9,13 +9,15 @@ export class Order {
   public freight: number;
   public coupon?: Coupon;
   public date: Date;
+  public zipCode: string;
 
-  public constructor({ customer }: Order.ConstructorParams) {
+  public constructor({ customer, zipCode }: Order.ConstructorParams) {
     this.id = -1;
     this.customer = customer;
     this.items = [];
     this.freight = 0;
     this.date = new Date();
+    this.zipCode = zipCode;
   }
 
   public addCoupon(coupon: Coupon): void {
@@ -56,12 +58,24 @@ export class Order {
 
     return `${year}${seq}`;
   }
+
+  public get discount(): number {
+    if (!this.coupon) {
+      return 0;
+    }
+    const totalWithoutFreight = this.total - this.freight;
+    const totalWithoutDiscount =
+      totalWithoutFreight / (1 - this.coupon.percentage / 100);
+
+    return totalWithoutDiscount - totalWithoutFreight;
+  }
 }
 
 export namespace Order {
   export type ConstructorParams = {
     customer: Customer;
     coupon?: Coupon;
+    zipCode: string;
   };
 
   export type Item = {

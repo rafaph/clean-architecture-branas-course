@@ -24,7 +24,7 @@ export class InMemoryCouponRepository implements CouponRepository {
     ];
   }
 
-  public getCoupon(code: string): Coupon | undefined {
+  public get(code: string): Coupon | undefined {
     return this.coupons.find((coupon: Coupon) => coupon.code === code);
   }
 }

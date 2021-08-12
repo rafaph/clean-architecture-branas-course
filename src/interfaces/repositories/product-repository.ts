@@ -1,5 +1,5 @@
 import { Product } from "@/entities/product";
 
 export abstract class ProductRepository {
-  public abstract getProduct(id: string): Product | undefined;
+  public abstract get(id: string): Product | undefined;
 }

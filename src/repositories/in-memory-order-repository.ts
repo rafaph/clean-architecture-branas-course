@@ -8,8 +8,12 @@ export class InMemoryOrderRepository implements OrderRepository {
     this.orders = [];
   }
 
-  public addOrder(order: Order): void {
+  public add(order: Order): void {
     order.id = this.orders.length + 1;
     this.orders.push(order);
+  }
+
+  public get(id: number): Order | undefined {
+    return this.orders.find((order) => order.id === id);
   }
 }

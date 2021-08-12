@@ -2,7 +2,7 @@
   "compilerOptions": {
     "incremental": true,
     "target": "es6",
-    "lib": ["ESNext"],
+    "lib": ["DOM","ESNext"],
     "module": "commonjs",
     "outDir": "./dist",
     "strict": true,

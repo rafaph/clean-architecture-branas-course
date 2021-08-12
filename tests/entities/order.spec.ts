@@ -7,6 +7,7 @@ describe("Order", () => {
       cpf: "718.169.150-33",
     });
     const order = new Order({
+      zipCode: "11.111-11",
       customer,
     });
     order.id = 123;

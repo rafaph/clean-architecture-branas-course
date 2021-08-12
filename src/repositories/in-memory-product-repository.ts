@@ -36,7 +36,7 @@ export class InMemoryProductRepository implements ProductRepository {
     ];
   }
 
-  public getProduct(id: string): Product | undefined {
+  public get(id: string): Product | undefined {
     return this.products.find((product: Product) => product.id === id);
   }
 }
