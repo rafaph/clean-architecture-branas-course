@@ -4,12 +4,16 @@
   "description": "Clean architecture course by Rodrigo Branas",
   "private": true,
   "scripts": {
+    "prepare": "husky install",
     "test": "mocha",
     "test:watch": "npm run-script test -- --watch",
     "test:cov": "nyc --reporter=lcov --reporter=text mocha",
     "lint": "eslint \"{src,tests}/**/*.ts\"",
     "lint:fix": "npm run-script lint -- --fix",
-    "prepare": "husky install"
+    "db:studio": "prisma studio",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "prisma db seed --preview-feature",
+    "db:update-client": "prisma generate"
   },
   "author": "Raphael Castro <rafaphcastro@gmail.com>",
   "license": "MIT",
@@ -21,12 +25,14 @@
     "url": "https://github.com/rafaph/clean-architecture-branas-course/issues"
   },
   "dependencies": {
+    "@prisma/client": "^2.29.0",
     "date-fns": "^2.23.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.21",
     "@types/faker": "^5.5.7",
     "@types/mocha": "^9.0.0",
+    "@types/node": "^16.6.1",
     "@types/sinon": "^10.0.2",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
@@ -42,6 +48,7 @@
     "mocha": "^9.0.3",
     "nyc": "^15.1.0",
     "prettier": "^2.3.2",
+    "prisma": "^2.29.0",
     "sinon": "^11.1.2",
     "ts-node": "^10.2.0",
     "tsconfig-paths": "^3.10.1",
