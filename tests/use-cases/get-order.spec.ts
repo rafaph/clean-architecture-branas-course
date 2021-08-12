@@ -46,7 +46,7 @@ describe("GetOrder", () => {
     const orderRepository = new InMemoryOrderRepository();
     const getOrder = new GetOrder({ orderRepository });
 
-    expect(() => getOrder.execute({ id: 1 })).to.throw;
+    expect(() => getOrder.execute({ id: 1 })).to.throw();
   });
 
   it("should get corrected order info with coupon", () => {
