@@ -1,4 +1,4 @@
-import { ProductFactory } from "@tests/factory/product-factory";
+import { ProductFactory } from "@test/factory/product-factory";
 import { Product } from "@/domain/entity/product";
 
 describe("Product", () => {

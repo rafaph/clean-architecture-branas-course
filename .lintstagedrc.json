@@ -2,7 +2,7 @@
   "*.ts": [
     "npm run lint"
   ],
-  "{src,tests}/**/*.ts": [
+  "{src,test}/**/*.ts": [
     "npm test"
   ]
 }

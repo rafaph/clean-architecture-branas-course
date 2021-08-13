@@ -1,5 +1,5 @@
 import { OrderItem } from "@/domain/entity/order-item";
-import { ProductFactory } from "@tests/factory/product-factory";
+import { ProductFactory } from "@test/factory/product-factory";
 
 describe("OrderItem", () => {
   it("total should be correct", () => {

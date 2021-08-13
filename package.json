@@ -8,7 +8,7 @@
     "test": "mocha",
     "test:watch": "npm run-script test -- --watch",
     "test:cov": "nyc --reporter=lcov --reporter=text mocha",
-    "lint": "eslint \"{src,tests}/**/*.ts\"",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
     "lint:fix": "npm run-script lint -- --fix",
     "db:studio": "prisma studio",
     "db:migrate": "prisma migrate deploy",
